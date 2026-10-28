@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #050816;
+  --color-surface: #101832;
+  --color-surface-2: #182445;
+  --color-line: #2a3a5e;
+  --color-fg: #eef3ff;
+  --color-muted: #93a0c2;
+  --color-faint: #667396;
+  --color-cyan: #3ec6ff;
+  --color-blue: #3aa0ff;
+  --color-violet: #7c6bff;
+  --color-ink: #06101c;
+  --color-danger: #ff5d73;
+  --font-sans: "Outfit", "IBM Plex Sans Arabic", "Segoe UI", "Noto Naskh Arabic", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  a[href] {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-faint);
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-cyan) 35%, transparent);
+    color: var(--color-fg);
+  }
+
+  .nibras-range {
+    width: 100%;
+    accent-color: var(--color-cyan);
+  }
+}
+
+[lang="ar"] {
+  font-family: "IBM Plex Sans Arabic", "Outfit", "Noto Naskh Arabic", system-ui, sans-serif;
+}
+
+.hero-card {
+  background:
+    radial-gradient(120% 90% at 0% 0%, color-mix(in oklab, var(--color-cyan) 20%, transparent), transparent 52%),
+    radial-gradient(90% 70% at 100% 120%, color-mix(in oklab, var(--color-violet) 22%, transparent), transparent 55%),
+    linear-gradient(180deg, #1a2748 0%, var(--color-surface) 72%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 16%, transparent),
+    0 18px 40px color-mix(in oklab, black 28%, transparent);
+}
+
+.studio-glow {
+  background:
+    radial-gradient(ellipse 90% 42% at 50% -8%, color-mix(in oklab, var(--color-cyan) 16%, transparent), transparent 58%),
+    radial-gradient(ellipse 50% 36% at 100% 110%, color-mix(in oklab, var(--color-violet) 14%, transparent), transparent 60%);
+}
+
+.panel {
+  background: linear-gradient(180deg, color-mix(in oklab, white 6%, var(--color-surface)) 0%, var(--color-surface) 42%);
+  border: 1px solid color-mix(in oklab, white 9%, var(--color-line));
+  box-shadow: inset 0 1px 0 color-mix(in oklab, white 12%, transparent);
+}
+
+.instrument {
+  background:
+    radial-gradient(90% 140% at 0% 0%, color-mix(in oklab, var(--color-cyan) 18%, transparent), transparent 58%),
+    linear-gradient(180deg, #16233f 0%, var(--color-surface) 78%);
+  border: 1px solid color-mix(in oklab, var(--color-cyan) 32%, var(--color-line));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 16%, transparent),
+    0 16px 36px color-mix(in oklab, black 28%, transparent);
+}
+
+.safe-x {
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+}
+
+.safe-t {
+  padding-top: max(1.25rem, env(safe-area-inset-top));
+}
+
+.safe-b {
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+}
+
+.brand-fill {
+  background-image: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--color-cyan) 78%, white) 0%,
+    var(--color-blue) 46%,
+    color-mix(in oklab, var(--color-violet) 70%, var(--color-blue)) 100%
+  );
+  color: var(--color-ink);
+}
+
+.press {
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.press:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.pulse-ring {
+  position: absolute;
+  inset: -0.55rem;
+  border-radius: 999px;
+  border: 2px solid color-mix(in oklab, var(--color-danger) 80%, white);
+  animation: ringpulse 1.5s ease-out infinite;
+}
+
+.audio-clip {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes ringpulse {
+  0% { transform: scale(1); opacity: 0.75; }
+  100% { transform: scale(1.28); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press,
+  .pulse-ring {
+    animation: none;
+    transition: none;
+  }
+
+  .press:active:not(:disabled) {
+    transform: none;
+  }
+}
