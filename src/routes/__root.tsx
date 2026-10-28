@@ -13,7 +13,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "Nibras Audio" },
-      { name: "description", content: "Nibras Audio — offline voice studio for phone recordings, imports, and notes." },
+      { name: "description", content: "Nibras Audio — browser voice studio for recordings, imports, and notes." },
       { name: "theme-color", content: "#050816" },
     ],
     links: [

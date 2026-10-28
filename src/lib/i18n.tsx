@@ -4,7 +4,7 @@ export type Locale = "az" | "tr" | "en" | "ru" | "ar";
 
 const az = {
   appName: "Nibras Audio",
-  tagline: "İnternetsiz səs studiyası",
+  tagline: "Brauzerdə səs studiyası",
   newRecording: "Yeni səs yazısı",
   openFile: "Audio fayl aç",
   opening: "Açılır…",
@@ -13,7 +13,7 @@ const az = {
   emptyProjects: "Hələ layihə yoxdur. İlk səsini buradan yaz.",
   emptyNotes: "Qeyd yoxdur. Fikirlər və işarələr burada qalır.",
   addNote: "Qeyd əlavə et",
-  offline: "İnternetsiz",
+  offline: "Brauzerdə",
   staysHere: "Səslər bu cihazda qalır.",
   micReady: "Mikrofon hazırdır",
   micPrompt: "Mikrofon yazanda soruşulacaq",
@@ -267,7 +267,7 @@ const az = {
 
 const ar: typeof az = {
   appName: "Nibras Audio",
-  tagline: "استوديو صوت بلا إنترنت",
+  tagline: "استوديو صوت في المتصفح",
   newRecording: "تسجيل جديد",
   openFile: "فتح ملف صوتي",
   opening: "جارٍ الفتح…",
@@ -276,7 +276,7 @@ const ar: typeof az = {
   emptyProjects: "لا مشاريع بعد. سجّل أول صوت من هنا.",
   emptyNotes: "لا ملاحظات. أفكارك وإشاراتك تبقى هنا.",
   addNote: "إضافة ملاحظة",
-  offline: "بلا إنترنت",
+  offline: "في المتصفح",
   staysHere: "التسجيلات تبقى على هذا الجهاز.",
   micReady: "الميكروفون جاهز",
   micPrompt: "سيُطلب الميكروفون عند التسجيل",
@@ -530,7 +530,7 @@ const ar: typeof az = {
 
 const en: typeof az = {
   appName: "Nibras Audio",
-  tagline: "Offline audio studio",
+  tagline: "Audio studio in the browser",
   newRecording: "New recording",
   openFile: "Open audio file",
   opening: "Opening…",
@@ -539,7 +539,7 @@ const en: typeof az = {
   emptyProjects: "No projects yet. Record the first one here.",
   emptyNotes: "No notes yet. Ideas and marks stay here.",
   addNote: "Add note",
-  offline: "Offline",
+  offline: "In the browser",
   staysHere: "Recordings stay on this device.",
   micReady: "Microphone ready",
   micPrompt: "Microphone is asked when you record",
@@ -793,7 +793,7 @@ const en: typeof az = {
 
 const tr: typeof az = {
   appName: "Nibras Audio",
-  tagline: "Çevrimdışı ses stüdyosu",
+  tagline: "Tarayıcıda ses stüdyosu",
   newRecording: "Yeni ses kaydı",
   openFile: "Ses dosyası aç",
   opening: "Açılıyor…",
@@ -802,7 +802,7 @@ const tr: typeof az = {
   emptyProjects: "Henüz proje yok. İlk sesini buradan kaydet.",
   emptyNotes: "Not yok. Fikirler ve işaretler burada kalır.",
   addNote: "Not ekle",
-  offline: "Çevrimdışı",
+  offline: "Tarayıcıda",
   staysHere: "Sesler bu cihazda kalır.",
   micReady: "Mikrofon hazır",
   micPrompt: "Mikrofon kayıtta sorulacak",
@@ -1056,7 +1056,7 @@ const tr: typeof az = {
 
 const ru: typeof az = {
   appName: "Nibras Audio",
-  tagline: "Звуковая студия без интернета",
+  tagline: "Звуковая студия в браузере",
   newRecording: "Новая запись",
   openFile: "Открыть аудиофайл",
   opening: "Открывается…",
@@ -1065,7 +1065,7 @@ const ru: typeof az = {
   emptyProjects: "Проектов пока нет. Запишите первый звук здесь.",
   emptyNotes: "Заметок нет. Мысли и пометки остаются здесь.",
   addNote: "Добавить заметку",
-  offline: "Без сети",
+  offline: "В браузере",
   staysHere: "Звуки остаются на этом устройстве.",
   micReady: "Микрофон готов",
   micPrompt: "Микрофон спросит разрешение при записи",
