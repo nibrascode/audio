@@ -1,3 +1,10 @@
 {
-  "installCommand": "npm install --omit=dev --no-audit --no-fund"
+  "installCommand": "npm install --omit=dev --no-audit --no-fund",
+  "rewrites": [
+    { "source": "/audio/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/audio/sw.js", "destination": "/sw.js" },
+    { "source": "/audio/favicon.svg", "destination": "/favicon.svg" },
+    { "source": "/audio/og.jpg", "destination": "/og.jpg" },
+    { "source": "/audio/__grok/:path*", "destination": "/__grok/:path*" }
+  ]
 }
