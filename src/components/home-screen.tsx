@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DenoiseSheet } from "@/components/denoise-sheet";
 import { ExportSheet } from "@/components/export-sheet";
 import { Frame, MicStatus, NoteSheet, SettingsButton } from "@/components/chrome";
@@ -39,7 +39,9 @@ function isQuota(err: unknown) {
   return err instanceof DOMException && (err.name === "QuotaExceededError" || err.name === "NS_ERROR_DOM_QUOTA_REACHED");
 }
 
-export function HomeScreen() {
+export type AudioToolKey = "open" | "share" | "edit" | "join" | "mix" | "fx" | "denoise" | "export" | "notes";
+
+export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
   const { t, locale } = useI18n();
   const library = useLibrary();
   const navigate = useNavigate();
@@ -198,6 +200,15 @@ export function HomeScreen() {
     { key: "notes", label: t("notes"), art: iconNotes, onClick: openNotes },
   ];
 
+  const focusItem = focus ? tools.find((item) => item.key === focus) : undefined;
+  const autoRan = useRef(false);
+  useEffect(() => {
+    if (!focus || autoRan.current || !library.ready || focus === "open") return;
+    autoRan.current = true;
+    focusItem?.onClick();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus, library.ready]);
+
   return (
     <Frame wide app>
       <div className="mx-auto flex min-h-0 w-full max-w-lg flex-1 flex-col">
@@ -225,6 +236,23 @@ export function HomeScreen() {
             </p>
           ) : null}
           {shareNote ? <p className="mt-3 text-sm text-cyan" role="status">{shareNote}</p> : null}
+
+          {focusItem ? (
+            <section className="panel mt-5 flex items-center gap-4 rounded-[1.35rem] p-4">
+              <img src={focusItem.art} alt="" className="size-16 shrink-0 rounded-[28%] object-cover" />
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-semibold leading-tight">{focusItem.label}</h2>
+                <button
+                  type="button"
+                  disabled={focusItem.key === "open" && (!library.ready || opening)}
+                  onClick={focusItem.onClick}
+                  className="press mt-2 rounded-full bg-cyan px-4 py-2 text-sm font-semibold text-bg disabled:opacity-50"
+                >
+                  {focusItem.label}
+                </button>
+              </div>
+            </section>
+          ) : null}
 
           <div className="mt-5 grid grid-cols-3 gap-x-4 gap-y-6">
             {tools.map((item) => (

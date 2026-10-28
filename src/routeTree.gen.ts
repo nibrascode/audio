@@ -11,8 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BatchRouteImport } from './routes/batch'
+import { Route as DenoiseRouteImport } from './routes/denoise'
+import { Route as EditRouteImport } from './routes/edit'
+import { Route as ExportRouteImport } from './routes/export'
+import { Route as FxRouteImport } from './routes/fx'
+import { Route as JoinRouteImport } from './routes/join'
+import { Route as MixRouteImport } from './routes/mix'
+import { Route as NotesRouteImport } from './routes/notes'
+import { Route as OpenRouteImport } from './routes/open'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as RecordRouteImport } from './routes/record'
+import { Route as ShareRouteImport } from './routes/share'
 import { Route as EIdRouteImport } from './routes/e.$id'
 import { Route as MIdRouteImport } from './routes/m.$id'
 import { Route as PIdRouteImport } from './routes/p.$id'
@@ -27,6 +36,46 @@ const BatchRoute = BatchRouteImport.update({
   path: '/batch',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DenoiseRoute = DenoiseRouteImport.update({
+  id: '/denoise',
+  path: '/denoise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditRoute = EditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExportRoute = ExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FxRoute = FxRouteImport.update({
+  id: '/fx',
+  path: '/fx',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MixRoute = MixRouteImport.update({
+  id: '/mix',
+  path: '/mix',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotesRoute = NotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpenRoute = OpenRouteImport.update({
+  id: '/open',
+  path: '/open',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -35,6 +84,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const RecordRoute = RecordRouteImport.update({
   id: '/record',
   path: '/record',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShareRoute = ShareRouteImport.update({
+  id: '/share',
+  path: '/share',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EIdRoute = EIdRouteImport.update({
@@ -56,8 +110,17 @@ const PIdRoute = PIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/batch': typeof BatchRoute
+  '/denoise': typeof DenoiseRoute
+  '/edit': typeof EditRoute
+  '/export': typeof ExportRoute
+  '/fx': typeof FxRoute
+  '/join': typeof JoinRoute
+  '/mix': typeof MixRoute
+  '/notes': typeof NotesRoute
+  '/open': typeof OpenRoute
   '/privacy': typeof PrivacyRoute
   '/record': typeof RecordRoute
+  '/share': typeof ShareRoute
   '/e/$id': typeof EIdRoute
   '/m/$id': typeof MIdRoute
   '/p/$id': typeof PIdRoute
@@ -65,8 +128,17 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/batch': typeof BatchRoute
+  '/denoise': typeof DenoiseRoute
+  '/edit': typeof EditRoute
+  '/export': typeof ExportRoute
+  '/fx': typeof FxRoute
+  '/join': typeof JoinRoute
+  '/mix': typeof MixRoute
+  '/notes': typeof NotesRoute
+  '/open': typeof OpenRoute
   '/privacy': typeof PrivacyRoute
   '/record': typeof RecordRoute
+  '/share': typeof ShareRoute
   '/e/$id': typeof EIdRoute
   '/m/$id': typeof MIdRoute
   '/p/$id': typeof PIdRoute
@@ -75,8 +147,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/batch': typeof BatchRoute
+  '/denoise': typeof DenoiseRoute
+  '/edit': typeof EditRoute
+  '/export': typeof ExportRoute
+  '/fx': typeof FxRoute
+  '/join': typeof JoinRoute
+  '/mix': typeof MixRoute
+  '/notes': typeof NotesRoute
+  '/open': typeof OpenRoute
   '/privacy': typeof PrivacyRoute
   '/record': typeof RecordRoute
+  '/share': typeof ShareRoute
   '/e/$id': typeof EIdRoute
   '/m/$id': typeof MIdRoute
   '/p/$id': typeof PIdRoute
@@ -84,15 +165,55 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/batch' | '/privacy' | '/record' | '/e/$id' | '/m/$id' | '/p/$id'
+    | '/'
+    | '/batch'
+    | '/denoise'
+    | '/edit'
+    | '/export'
+    | '/fx'
+    | '/join'
+    | '/mix'
+    | '/notes'
+    | '/open'
+    | '/privacy'
+    | '/record'
+    | '/share'
+    | '/e/$id'
+    | '/m/$id'
+    | '/p/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/batch' | '/privacy' | '/record' | '/e/$id' | '/m/$id' | '/p/$id'
+  to:
+    | '/'
+    | '/batch'
+    | '/denoise'
+    | '/edit'
+    | '/export'
+    | '/fx'
+    | '/join'
+    | '/mix'
+    | '/notes'
+    | '/open'
+    | '/privacy'
+    | '/record'
+    | '/share'
+    | '/e/$id'
+    | '/m/$id'
+    | '/p/$id'
   id:
     | '__root__'
     | '/'
     | '/batch'
+    | '/denoise'
+    | '/edit'
+    | '/export'
+    | '/fx'
+    | '/join'
+    | '/mix'
+    | '/notes'
+    | '/open'
     | '/privacy'
     | '/record'
+    | '/share'
     | '/e/$id'
     | '/m/$id'
     | '/p/$id'
@@ -101,8 +222,17 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BatchRoute: typeof BatchRoute
+  DenoiseRoute: typeof DenoiseRoute
+  EditRoute: typeof EditRoute
+  ExportRoute: typeof ExportRoute
+  FxRoute: typeof FxRoute
+  JoinRoute: typeof JoinRoute
+  MixRoute: typeof MixRoute
+  NotesRoute: typeof NotesRoute
+  OpenRoute: typeof OpenRoute
   PrivacyRoute: typeof PrivacyRoute
   RecordRoute: typeof RecordRoute
+  ShareRoute: typeof ShareRoute
   EIdRoute: typeof EIdRoute
   MIdRoute: typeof MIdRoute
   PIdRoute: typeof PIdRoute
@@ -124,6 +254,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BatchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/denoise': {
+      id: '/denoise'
+      path: '/denoise'
+      fullPath: '/denoise'
+      preLoaderRoute: typeof DenoiseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/edit': {
+      id: '/edit'
+      path: '/edit'
+      fullPath: '/edit'
+      preLoaderRoute: typeof EditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/export': {
+      id: '/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof ExportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fx': {
+      id: '/fx'
+      path: '/fx'
+      fullPath: '/fx'
+      preLoaderRoute: typeof FxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mix': {
+      id: '/mix'
+      path: '/mix'
+      fullPath: '/mix'
+      preLoaderRoute: typeof MixRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes': {
+      id: '/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/open': {
+      id: '/open'
+      path: '/open'
+      fullPath: '/open'
+      preLoaderRoute: typeof OpenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -136,6 +322,13 @@ declare module '@tanstack/react-router' {
       path: '/record'
       fullPath: '/record'
       preLoaderRoute: typeof RecordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/share': {
+      id: '/share'
+      path: '/share'
+      fullPath: '/share'
+      preLoaderRoute: typeof ShareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/e/$id': {
@@ -165,8 +358,17 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BatchRoute: BatchRoute,
+  DenoiseRoute: DenoiseRoute,
+  EditRoute: EditRoute,
+  ExportRoute: ExportRoute,
+  FxRoute: FxRoute,
+  JoinRoute: JoinRoute,
+  MixRoute: MixRoute,
+  NotesRoute: NotesRoute,
+  OpenRoute: OpenRoute,
   PrivacyRoute: PrivacyRoute,
   RecordRoute: RecordRoute,
+  ShareRoute: ShareRoute,
   EIdRoute: EIdRoute,
   MIdRoute: MIdRoute,
   PIdRoute: PIdRoute,
