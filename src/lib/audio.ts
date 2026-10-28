@@ -251,6 +251,29 @@ export function classifyMicError(err: unknown): MicPerm {
   return "denied";
 }
 
+
+export async function primeMicPermission(): Promise<MicPerm> {
+  if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") return "unsupported";
+  if (!window.isSecureContext) return "insecure";
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    for (const track of stream.getTracks()) track.stop();
+    return "granted";
+  } catch (err) {
+    const kind = classifyMicError(err);
+    if (kind === "denied") {
+      try {
+        const status = await navigator.permissions.query({ name: "microphone" as PermissionName });
+        if (status.state === "prompt") return "prompt";
+        if (status.state === "granted") return "granted";
+      } catch {
+        /* Permissions API missing — keep denied */
+      }
+    }
+    return kind;
+  }
+}
+
 export function useMicWatch(): MicPerm {
   const [perm, setPerm] = useState<MicPerm>("unknown");
   useEffect(() => {

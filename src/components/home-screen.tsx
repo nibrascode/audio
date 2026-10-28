@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DenoiseSheet } from "@/components/denoise-sheet";
 import { ExportSheet } from "@/components/export-sheet";
 import { BackLink, Frame, MicStatus, NoteSheet, SettingsButton } from "@/components/chrome";
@@ -16,7 +16,7 @@ import iconFx from "@/assets/icons/fx.jpg";
 import iconDenoise from "@/assets/icons/denoise.jpg";
 import iconExport from "@/assets/icons/export.jpg";
 import iconNotes from "@/assets/icons/notes.jpg";
-import { fileExt, formatClock, formatStamp, mimeFromName, readDuration, readShape, safeName, shareAudio, sniffAudio, useMicWatch } from "@/lib/audio";
+import { fileExt, formatClock, formatStamp, mimeFromName, primeMicPermission, readDuration, readShape, safeName, shareAudio, sniffAudio, useMicWatch } from "@/lib/audio";
 import { toneColor } from "@/lib/tone";
 import { useI18n } from "@/lib/i18n";
 import { useLibrary } from "@/lib/library";
@@ -46,6 +46,24 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
   const library = useLibrary();
   const navigate = useNavigate();
   const perm = useMicWatch();
+  useEffect(() => {
+    if (focus) return;
+    let cancel = false;
+    void (async () => {
+      if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) return;
+      try {
+        const status = await navigator.permissions.query({ name: "microphone" as PermissionName });
+        if (status.state !== "prompt") return;
+      } catch {
+        /* ask anyway */
+      }
+      if (cancel) return;
+      await primeMicPermission();
+    })();
+    return () => {
+      cancel = true;
+    };
+  }, [focus]);
   const fileRef = useRef<HTMLInputElement>(null);
   const [banner, setBanner] = useState<Banner>(null);
   const [opening, setOpening] = useState(false);

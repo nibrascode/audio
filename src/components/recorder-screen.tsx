@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { BackLink, Frame, MicStatus } from "@/components/chrome";
 import { LiveMeter } from "@/components/live-meter";
 import { AudioPlayer } from "@/components/player";
-import { classifyMicError, formatClock, formatStamp, readShape, useMicWatch, type MicPerm } from "@/lib/audio";
+import { classifyMicError, formatClock, formatStamp, primeMicPermission, readShape, useMicWatch, type MicPerm } from "@/lib/audio";
 import { m4aMime, startCapture, type CaptureSession, type MicLoss, type RecordFormat } from "@/lib/capture";
 import { useI18n } from "@/lib/i18n";
 import { useLibrary } from "@/lib/library";
@@ -121,6 +121,37 @@ export function RecorderScreen() {
     setM4aOk(m4aMime() !== "");
     setM4aChecked(true);
   }, []);
+
+
+  useEffect(() => {
+    let cancel = false;
+    void (async () => {
+      if (!window.isSecureContext || !navigator.mediaDevices?.getUserMedia) return;
+      try {
+        const status = await navigator.permissions.query({ name: "microphone" as PermissionName });
+        if (cancel) return;
+        if (status.state === "granted") {
+          setOverride("granted");
+          return;
+        }
+        if (status.state === "denied") {
+          setOverride("denied");
+          return;
+        }
+      } catch {
+        /* Permissions API unavailable — ask via getUserMedia */
+      }
+      if (cancel) return;
+      setOverride("requesting");
+      const result = await primeMicPermission();
+      if (cancel) return;
+      setOverride(result === "prompt" ? null : result);
+    })();
+    return () => {
+      cancel = true;
+    };
+  }, []);
+
 
   function releaseHardware() {
     sessionRef.current?.release();
