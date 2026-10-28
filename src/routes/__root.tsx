@@ -35,7 +35,7 @@ export const Route = createRootRoute({
 function OfflineCache() {
   useEffect(() => {
     if (!import.meta.env.PROD || !("serviceWorker" in navigator)) return;
-    void navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+    void navigator.serviceWorker.register("/audio/sw.js").catch(() => undefined);
   }, []);
   return null;
 }

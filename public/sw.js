@@ -18,7 +18,7 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith("/assets/")) {
+  if (url.pathname.startsWith("/audio/assets/")) {
     event.respondWith(cacheFirst(request));
     return;
   }

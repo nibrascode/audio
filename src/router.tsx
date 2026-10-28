@@ -7,6 +7,7 @@ import { routeTree } from "./routeTree.gen";
 export function getRouter() {
   return createRouter({
     routeTree,
+    basepath: "/audio",
     rewrite: previewPathRewrite(),
     defaultErrorComponent: AppErrorComponent,
     defaultNotFoundComponent: NotFoundPage,
