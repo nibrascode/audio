@@ -216,7 +216,7 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
           <div className="flex min-w-0 items-center gap-3">
             <img src={mark} alt="" width={40} height={40} className="size-10 rounded-2xl" />
             <div className="min-w-0">
-              <h1 className="truncate text-base font-semibold leading-tight">{t("appName")}</h1>
+              <h1 className="truncate text-base font-semibold leading-tight">{focusItem ? focusItem.label : t("appName")}</h1>
               <p className="truncate text-xs text-faint">{t("offline")}</p>
             </div>
           </div>
@@ -252,8 +252,7 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
                 </button>
               </div>
             </section>
-          ) : null}
-
+          ) : (
           <div className="mt-5 grid grid-cols-3 gap-x-4 gap-y-6">
             {tools.map((item) => (
               <button
@@ -268,6 +267,7 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
               </button>
             ))}
           </div>
+          )}
 
           {projects.length > 0 ? (
             <section className="panel mt-8 overflow-hidden rounded-[1.35rem]">
