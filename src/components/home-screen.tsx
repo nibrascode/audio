@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { DenoiseSheet } from "@/components/denoise-sheet";
 import { ExportSheet } from "@/components/export-sheet";
-import { Frame, MicStatus, NoteSheet, SettingsButton } from "@/components/chrome";
+import { BackLink, Frame, MicStatus, NoteSheet, SettingsButton } from "@/components/chrome";
 import mark from "@/assets/nibras-mark.jpg";
 import iconRecord from "@/assets/icons/record.jpg";
 import iconOpen from "@/assets/icons/open.jpg";
@@ -147,11 +147,10 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
     setPick(kind);
   }
 
-  async function runPicked(id: string) {
-    const kind = pick;
+  async function runWithKind(kind: NonNullable<typeof pick>, id: string) {
     const project = projects.find((item) => item.id === id);
     setPick(null);
-    if (!kind || !project) return;
+    if (!project) return;
     if (kind === "edit" || kind === "join") {
       if (kind === "join") {
         try {
@@ -201,30 +200,42 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
   ];
 
   const focusItem = focus ? tools.find((item) => item.key === focus) : undefined;
-  const autoRan = useRef(false);
-  useEffect(() => {
-    if (!focus || autoRan.current || !library.ready || focus === "open") return;
-    autoRan.current = true;
-    focusItem?.onClick();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focus, library.ready]);
+  const focusCta =
+    focusItem?.key === "open"
+      ? opening
+        ? t("opening")
+        : t("openFile")
+      : focusItem?.key === "notes"
+        ? noteItems.length
+          ? t("notes")
+          : t("addNote")
+        : t("pickSound");
 
   return (
     <Frame wide app>
       <div className="mx-auto flex min-h-0 w-full max-w-lg flex-1 flex-col">
         <header className="flex items-center justify-between gap-3 pb-3">
-          <div className="flex min-w-0 items-center gap-3">
-            <img src={mark} alt="" width={40} height={40} className="size-10 rounded-2xl" />
-            <div className="min-w-0">
-              <h1 className="truncate text-base font-semibold leading-tight">{focusItem ? focusItem.label : t("appName")}</h1>
-              <p className="truncate text-xs text-faint">{t("offline")}</p>
-            </div>
-          </div>
-          <SettingsButton />
+          {focusItem ? (
+            <>
+              <BackLink />
+              <SettingsButton />
+            </>
+          ) : (
+            <>
+              <div className="flex min-w-0 items-center gap-3">
+                <img src={mark} alt="" width={40} height={40} className="size-10 rounded-2xl" />
+                <div className="min-w-0">
+                  <h1 className="truncate text-base font-semibold leading-tight">{t("appName")}</h1>
+                  <p className="truncate text-xs text-faint">{t("offline")}</p>
+                </div>
+              </div>
+              <SettingsButton />
+            </>
+          )}
         </header>
 
         <div className="safe-b min-h-0 flex-1 overflow-y-auto">
-          <MicStatus perm={perm} />
+          {!focusItem ? <MicStatus perm={perm} /> : null}
           {library.memoryOnly ? (
             <p className="mt-3 rounded-2xl border border-line bg-surface px-4 py-3 text-sm text-muted" role="status">
               {t("memoryOnly")}
@@ -238,21 +249,60 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
           {shareNote ? <p className="mt-3 text-sm text-cyan" role="status">{shareNote}</p> : null}
 
           {focusItem ? (
-            <section className="panel mt-5 flex items-center gap-4 rounded-[1.35rem] p-4">
-              <img src={focusItem.art} alt="" className="size-16 shrink-0 rounded-[28%] object-cover" />
-              <div className="min-w-0 flex-1">
-                <h2 className="text-lg font-semibold leading-tight">{focusItem.label}</h2>
-                <button
-                  type="button"
-                  disabled={focusItem.key === "open" && (!library.ready || opening)}
-                  onClick={focusItem.onClick}
-                  className="press mt-2 rounded-full bg-cyan px-4 py-2 text-sm font-semibold text-bg disabled:opacity-50"
-                >
-                  {focusItem.label}
-                </button>
-              </div>
+            <section className="mt-4 flex flex-col items-center text-center">
+              <img
+                src={focusItem.art}
+                alt=""
+                className="size-28 rounded-[32%] object-cover shadow-[0_18px_40px_rgba(0,0,0,0.4)]"
+              />
+              <h1 className="mt-5 text-2xl font-semibold tracking-tight">{focusItem.label}</h1>
+              <p className="mt-2 max-w-sm text-sm text-pretty text-muted">
+                {focusItem.key === "open" ? t("openFile") : focusItem.key === "notes" ? t("notes") : t("needSound")}
+              </p>
+              <button
+                type="button"
+                disabled={focusItem.key === "open" && (!library.ready || opening)}
+                onClick={focusItem.onClick}
+                className="press brand-fill mt-6 inline-flex min-h-12 w-full max-w-sm items-center justify-center rounded-2xl px-5 text-sm font-semibold disabled:opacity-50"
+              >
+                {focusCta}
+              </button>
+              {projects.length > 0 && focusItem.key !== "open" && focusItem.key !== "notes" ? (
+                <section className="panel mt-8 w-full overflow-hidden rounded-[1.35rem] text-start">
+                  <h2 className="px-4 pt-4 text-sm text-faint">{t("pickSound")}</h2>
+                  <ul className="mt-1">
+                    {projects.map((project, index) => (
+                      <li key={project.id} className={index > 0 ? "border-t border-white/6" : undefined}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const kind =
+                              focusItem.key === "fx"
+                                ? "mix"
+                                : focusItem.key === "edit" ||
+                                    focusItem.key === "join" ||
+                                    focusItem.key === "mix" ||
+                                    focusItem.key === "denoise" ||
+                                    focusItem.key === "export" ||
+                                    focusItem.key === "share"
+                                  ? focusItem.key
+                                  : "edit";
+                            void runWithKind(kind, project.id);
+                          }}
+                          className="press flex min-h-[3.4rem] w-full items-center gap-3 px-4 text-start"
+                        >
+                          <span className="size-1.5 shrink-0 rounded-full" style={{ background: toneColor(project.tone) || "#667396" }} />
+                          <span className="min-w-0 flex-1 truncate text-[15px] font-medium">{project.title}</span>
+                          <span className="shrink-0 text-xs tabular-nums text-faint">{formatClock(project.durationMs)}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ) : null}
             </section>
           ) : (
+          <>
           <div className="mt-5 grid grid-cols-3 gap-x-4 gap-y-6">
             {tools.map((item) => (
               <button
@@ -267,7 +317,6 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
               </button>
             ))}
           </div>
-          )}
 
           {projects.length > 0 ? (
             <section className="panel mt-8 overflow-hidden rounded-[1.35rem]">
@@ -286,6 +335,8 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
             </section>
           ) : (
             <p className="mt-8 text-sm text-faint">{t("emptyProjects")}</p>
+          )}
+          </>
           )}
         </div>
         <input
@@ -308,7 +359,7 @@ export function HomeScreen({ focus }: { focus?: AudioToolKey } = {}) {
                 <li key={project.id}>
                   <button
                     type="button"
-                    onClick={() => void runPicked(project.id)}
+                    onClick={() => void runWithKind(pick!, project.id)}
                     className="press flex min-h-14 w-full items-center gap-3 rounded-2xl border border-line bg-surface px-4 text-start"
                   >
                     <span className="min-w-0 flex-1">
